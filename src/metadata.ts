@@ -15,14 +15,14 @@ export function createPostMetadata(post: BlogPost, siteUrl: string) {
       publishedTime: post.date,
       authors: [post.author],
       images: post.image
-        ? [{ url: post.image, alt: post.imageAlt ?? post.title }]
+        ? [{ url: `${siteUrl}${post.image}`, alt: post.imageAlt ?? post.title }]
         : undefined,
     },
     twitter: {
       card: 'summary_large_image' as const,
       title: post.title,
       description: post.description,
-      images: post.image ? [post.image] : undefined,
+      images: post.image ? [`${siteUrl}${post.image}`] : undefined,
     },
     alternates: {
       canonical: `${siteUrl}/blog/${post.slug}`,

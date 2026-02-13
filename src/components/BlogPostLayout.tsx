@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import type { BlogPost } from '../types';
 
 interface BlogPostLayoutProps {
@@ -38,6 +39,31 @@ export function BlogPostLayout({
     },
   };
 
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: siteUrl,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Blog',
+        item: `${siteUrl}/blog`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: post.title,
+        item: `${siteUrl}/blog/${post.slug}`,
+      },
+    ],
+  };
+
   return (
     <div
       className="min-h-screen"
@@ -50,9 +76,30 @@ export function BlogPostLayout({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
       {header}
 
       <main className="mx-auto max-w-3xl px-4 pb-24 pt-40 sm:px-6 lg:px-8">
+        {/* Breadcrumbs */}
+        <nav aria-label="Breadcrumb" className="mb-6">
+          <ol className="flex items-center gap-2 text-sm text-gray-500">
+            <li>
+              <Link href="/" className="transition-colors hover:text-gray-900">Home</Link>
+            </li>
+            <li aria-hidden="true" className="text-gray-300">/</li>
+            <li>
+              <Link href="/blog" className="transition-colors hover:text-gray-900">Blog</Link>
+            </li>
+            <li aria-hidden="true" className="text-gray-300">/</li>
+            <li className="truncate text-gray-400" title={post.title}>
+              {post.title}
+            </li>
+          </ol>
+        </nav>
+
         <article>
           {/* Hero image first — prominent at the top */}
           {post.image && (

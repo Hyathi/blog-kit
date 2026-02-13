@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import type { BlogPostMeta } from '../types';
 import { PostCard } from './PostCard';
 
@@ -26,6 +27,17 @@ export function BlogListingLayout({
     >
       {header}
       <main className="mx-auto max-w-5xl px-4 pb-24 pt-40 sm:px-6 lg:px-8">
+        {/* Breadcrumbs */}
+        <nav aria-label="Breadcrumb" className="mb-6">
+          <ol className="flex items-center gap-2 text-sm text-gray-500">
+            <li>
+              <Link href="/" className="transition-colors hover:text-gray-900">Home</Link>
+            </li>
+            <li aria-hidden="true" className="text-gray-300">/</li>
+            <li className="text-gray-400">Blog</li>
+          </ol>
+        </nav>
+
         <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
           {title}
         </h1>
