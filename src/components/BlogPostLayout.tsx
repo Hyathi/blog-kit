@@ -52,13 +52,27 @@ export function BlogPostLayout({
       />
       {header}
 
-      <main className="mx-auto max-w-3xl px-4 pb-24 pt-32 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-3xl px-4 pb-24 pt-40 sm:px-6 lg:px-8">
         <article>
-          <header className="mb-10">
+          {/* Hero image first — prominent at the top */}
+          {post.image && (
+            <div className="relative mb-8 aspect-[2/1] overflow-hidden rounded-2xl shadow-lg">
+              <Image
+                src={post.image}
+                alt={post.imageAlt ?? post.title}
+                fill
+                priority
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 768px"
+              />
+            </div>
+          )}
+
+          <header className="mb-12">
             <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-[2.5rem] lg:leading-[1.2]">
               {post.title}
             </h1>
-            <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-gray-500">
+            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-gray-500">
               <span>{post.author}</span>
               <span aria-hidden="true">&middot;</span>
               <time dateTime={post.date}>
@@ -72,19 +86,6 @@ export function BlogPostLayout({
               <span>{post.readingTime} min read</span>
             </div>
           </header>
-
-          {post.image && (
-            <div className="relative mb-10 aspect-[16/9] overflow-hidden rounded-2xl shadow-lg">
-              <Image
-                src={post.image}
-                alt={post.imageAlt ?? post.title}
-                fill
-                priority
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 768px"
-              />
-            </div>
-          )}
 
           <div
             className="blog-prose"

@@ -25,12 +25,12 @@ export function BlogListingLayout({
       }}
     >
       {header}
-      <main className="mx-auto max-w-5xl px-4 pb-24 pt-32 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-5xl px-4 pb-24 pt-40 sm:px-6 lg:px-8">
         <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
           {title}
         </h1>
         {description && (
-          <p className="mt-4 max-w-2xl text-lg text-gray-600">{description}</p>
+          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-gray-600">{description}</p>
         )}
 
         {posts.length === 0 ? (
@@ -38,7 +38,7 @@ export function BlogListingLayout({
             No posts yet. Check back soon!
           </p>
         ) : (
-          <div className="mt-12 grid gap-8 sm:grid-cols-2">
+          <div className="mt-14 grid gap-10 sm:grid-cols-2">
             {posts.map((post) => (
               <PostCard key={post.slug} post={post} />
             ))}
