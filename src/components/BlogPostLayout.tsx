@@ -17,27 +17,30 @@ export function BlogPostLayout({
   siteUrl,
   publisherName,
 }: BlogPostLayoutProps) {
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: post.title,
-    description: post.description,
-    datePublished: post.date,
-    author: {
-      '@type': 'Organization',
-      name: post.author,
+  // Use rich schema from schema.json if available, otherwise generate basic Article schema
+  const articleSchema = post.schema ?? [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: post.title,
+      description: post.description,
+      datePublished: post.date,
+      author: {
+        '@type': 'Organization',
+        name: post.author,
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: publisherName,
+        url: siteUrl,
+      },
+      image: post.image ? `${siteUrl}${post.image}` : undefined,
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': `${siteUrl}/blog/${post.slug}`,
+      },
     },
-    publisher: {
-      '@type': 'Organization',
-      name: publisherName,
-      url: siteUrl,
-    },
-    image: post.image ? `${siteUrl}${post.image}` : undefined,
-    mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': `${siteUrl}/blog/${post.slug}`,
-    },
-  };
+  ];
 
   const breadcrumbLd = {
     '@context': 'https://schema.org',
@@ -72,10 +75,14 @@ export function BlogPostLayout({
           'linear-gradient(to bottom, #030014 0px, #FAFAF9 140px, #FAFAF9 100%)',
       }}
     >
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      {/* Inject all schema blocks (Article, FAQPage, speakable, etc.) */}
+      {articleSchema.map((schema, i) => (
+        <script
+          key={i}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      ))}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}

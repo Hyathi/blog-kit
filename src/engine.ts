@@ -129,7 +129,19 @@ export function createBlogEngine(config: BlogKitConfig) {
     const { meta, content } = parseFrontmatter(filePath, defaultAuthor);
     const html = await markdownToHtml(content);
 
-    return { ...meta, content: html };
+    // Load rich schema if present
+    const schemaPath = path.join(contentDir, slug, 'schema.json');
+    let schema: Record<string, unknown>[] | undefined;
+    if (fs.existsSync(schemaPath)) {
+      try {
+        const raw = JSON.parse(fs.readFileSync(schemaPath, 'utf-8'));
+        schema = Array.isArray(raw) ? raw : [raw];
+      } catch {
+        // Ignore malformed schema — fall back to auto-generated
+      }
+    }
+
+    return { ...meta, content: html, schema };
   }
 
   return { getAllPostSlugs, getAllPostsMeta, getPostBySlug };

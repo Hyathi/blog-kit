@@ -12,6 +12,8 @@ export interface BlogPostMeta {
 
 export interface BlogPost extends BlogPostMeta {
   content: string;
+  /** Rich JSON-LD schema from schema.json (Article, FAQPage, speakable, etc.) */
+  schema?: Record<string, unknown>[];
 }
 
 export interface BlogKitConfig {
